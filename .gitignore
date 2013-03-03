@@ -1,0 +1,16 @@
+# Ignore the following files
+*.log
+*.pot
+*.pyc
+
+# Ignore OS X files
+.DS_Store
+
+# Ignore local settings (if present)
+local_settings.py
+
+# Ignore collected static files
+/static/
+
+# Ignore vagrant files
+.vagrant
