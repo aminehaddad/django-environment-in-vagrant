@@ -43,24 +43,32 @@ At this point, `_conf/vagrant_setup.sh` takes over and does the following:
 
 1. It updates the package repositories for Ubuntu.
 2. It installs git, nginx, nfs tools, postgresql, and virtualenvwrapper.
-3. It configures nginx by symlinking to `_conf/etc/nginx/sites-available/site.conf`.
-4. It creates the postgres user `vagrant` with password `vagrant`.
+3. It configures nginx by symlinking to `_conf/etc/nginx/sites-available/site.conf`
+4. It creates the postgres user `vagrant` with password `vagrant`
 5. It creates the database `vagrant` and gives the user `vagrant` access to it.
 6. It installs virtualenvwrapper.
-7. It creates a virtual environment called `vagrant`.
+7. It creates a virtual environment called `vagrant`
 
 That's it! You now have a clean development environment.
 
 ## Awesome! What's next?
 
-1. SSH into your environment with: `vagrant ssh`.
-2. CD into your development directory: `cd site`.
-3. Activate the python virtual environment with: `workon vagrant`.
-4. Install requirements.txt: `pip install -r site/requirements.txt`.
-5. Create a Django project: `django-admin.py startproject my_site .`. (pay attention to the . at the end of that command)
-6. Run the Django webserver: `./manage.py runserver`.
+You need to setup your Django project! Do it like so:
+
+1. SSH into your environment with: `vagrant ssh`
+2. CD into your development directory: `cd site`
+3. Activate the python virtual environment with: `workon vagrant`
+4. Install requirements.txt: `pip install -r requirements.txt`
+5. Create a Django project: `django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
+6. Run the Django webserver: `./manage.py runserver`
 7. Access your site in your host environment by visiting: [http://192.168.31.100](http://192.168.31.100/)
+
+## Wowzers! But won't it commit to your repository instead of mine?
+
+Yes, unfortunately it will. You can fix that in the virtual environment by deleting the `.git` directory and re-initializing it.
+
+If you know of a better way to solve that problem, feel free to let me know!
 
 ## Troubleshooting
 
-This section will be used for common troubleshooting problems or hints.
+This section is reserved for common troubleshooting problems or hints.
