@@ -60,7 +60,7 @@ You need to setup your Django project! Do it like so:
 3. Activate the python virtual environment with: `workon vagrant`
 4. Install requirements.txt: `pip install -r requirements.txt`
 5. Create a Django project: `django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
-6. Run the Django webserver: `./manage.py runserver`
+6. Run the Django webserver: `python manage.py runserver`
 7. Access your site in your host environment by visiting: [http://192.168.31.100](http://192.168.31.100/)
 
 ## Wowzers! But won't it commit to your repository instead of mine?
