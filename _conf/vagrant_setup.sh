@@ -65,7 +65,7 @@ fi
 #	Setup virtualenv
 ##
 echo "Install the virtual environment.."
-sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv vagrant; deactivate;"
+sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv site; deactivate;"
 
 ##
 #	Setup is complete.

@@ -57,11 +57,11 @@ You need to setup your Django project! Do it like so:
 
 1. SSH into your environment with: `vagrant ssh`
 2. CD into your development directory: `cd site`
-3. Activate the python virtual environment with: `workon vagrant`
+3. Activate the python virtual environment with: `workon site`
 4. Install requirements.txt: `pip install -r requirements.txt`
 5. Create a Django project: `django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
 6. Run the Django webserver: `python manage.py runserver`
-7. Access your site in your host environment by visiting: [http://192.168.31.100](http://192.168.31.100/)
+7. Access your site in your host environment by visiting: [http://10.10.10.10](http://10.10.10.10/)
 
 ## Wowzers! But won't it commit to your repository instead of mine?
 
