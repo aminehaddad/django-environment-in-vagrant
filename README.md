@@ -58,9 +58,9 @@ Install the required python packages:
 
 ## Setting up a Django project
 
-Create a new Django project:
+Create a new Django project. Pay attention to the `.` at the end of that command if you did `cd site`:
 
-	`django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
+	django-admin.py startproject my_site .
 
 Setup the database models and, if used, run migrations:
 
