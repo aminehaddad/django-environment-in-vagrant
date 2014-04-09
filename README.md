@@ -1,73 +1,87 @@
 # django-environment-in-vagrant
 
-Instantly build a clean environment ready for Django development.
-
-## Why does this exist?
-
-There are a variety of reasons why you may find this project useful. To name a few:
-
-1. You want to start developing or learning Django without the hastle of installing an environment.
-2. You want to keep your host operating system clean from any development environments.
-3. You want to use your favorite editor in the host operating system and synchronize to the development environment.
-4. You want a simple skeleton you can trust that is basic enough to read through.
-5. You want no clutter involved in your development environment.
-6. You are on OS X or Windows and just want to begin developing but do not want to deal with installing a Linux environment, etc.
-7. You do not want to deal with Puppet or Chef.
+Quickly build a clean virtual environment ready for Django development.
 
 ## Getting started
 
-You need to install [Vagrant](https://www.vagrantup.com/) and [VirtualBox](http://www.virtualbox.org/).
-If you face any problems, see the [Vagrant documentation](http://www.vagrantup.com/).
+Install the following applications in your host operating system:
 
-## Cloning the repository
+* [VirtualBox](https://www.virtualbox.org/)
+* [Vagrant](https://www.vagrantup.com/)
 
-Clone this repository as the name of the project you are developing:
+The following Vagrant plugin is recommended to keep the VirtualBox guest additions automatically updated:
+
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+
+This is how you install vagrant-vbguest:
+
+	vagrant plugin install vagrant-vbguest
+
+## Getting the source code
+
+Retrieve the source code:
 
 	git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my_project
+	cd my_project
 
 Where `my_project` is the name of your new website or project.
 
-## Building the environment
+## Starting the virtual machine development environment
 
-To build or start the development environment, simply run the following command from within your `my_project` directory:
+The following command will start the environment:
 
 	vagrant up
 
-This is what will happen:
+The installation script will run within the virtual machine if it is the first time it is started (in order to install the required packages).
 
-1. Vagrant will download Ubuntu Precise 32-bit and then create a Virtual Machine.
-2. Vagrant will prompt you for your password to setup NFS sharing between the guest and the host.
-3. Vagrant will execute the following script in the guest operating system: `_conf/vagrant_setup.sh`.
+## Setting up the virtual machine development environment
 
-At this point, `_conf/vagrant_setup.sh` takes over and does the following:
+SSH into the virtual machine:
 
-1. It updates the package repositories for Ubuntu.
-2. It installs git, nginx, nfs tools, postgresql, and virtualenvwrapper.
-3. It configures nginx by symlinking to `_conf/etc/nginx/sites-available/site.conf`
-4. It creates the postgres user `vagrant` with password `vagrant`
-5. It creates the database `vagrant` and gives the user `vagrant` access to it.
-6. It installs virtualenvwrapper.
-7. It creates a virtual environment called `vagrant`
+	vagrant ssh
 
-That's it! You now have a clean development environment.
+The source code is shared with the virtual machine in this directory:
 
-## Awesome! What's next?
+	cd site
 
-You need to setup your Django project! Do it like so:
+You can pull the latest source code:
 
-1. SSH into your environment with: `vagrant ssh`
-2. CD into your development directory: `cd site`
-3. Activate the python virtual environment with: `workon site`
-4. Install requirements.txt: `pip install -r requirements.txt`
-5. Create a Django project: `django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
-6. Run the Django webserver: `python manage.py runserver`
-7. Access your site in your host environment by visiting: [http://10.10.10.10](http://10.10.10.10/)
+	git pull
 
-## Wowzers! But won't it commit to your repository instead of mine?
+Always run the following command to use the proper python virtual environment:
 
-Yes, unfortunately it will. You can fix that in the virtual environment by deleting the `.git` directory and re-initializing it.
+	workon site
 
-If you know of a better way to solve that problem, feel free to let me know!
+Install the required python packages:
+
+	pip install -r requirements.txt
+
+## Setting up a Django project
+
+Create a new Django project:
+
+	`django-admin.py startproject my_site .` (pay attention to the . at the end of that command)
+
+Setup the database models and, if used, run migrations:
+
+	./manage.py syncdb
+	./manage.py migrate
+
+You can now start the development web server:
+
+	./manage.py runserver 0.0.0.0:8080
+
+Access this URL:
+
+	[http://10.10.10.10:8080](http://10.10.10.10:8080/)
+
+To turn off the virtual machine, run the following from your host terminal:
+
+	vagrant halt -f
+
+To turn on the virtual machine, run the following:
+
+	vagrant up
 
 ## Troubleshooting
 

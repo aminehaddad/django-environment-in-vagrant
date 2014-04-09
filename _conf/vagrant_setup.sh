@@ -13,7 +13,11 @@ echo "Updating package repositories.."
 apt-get update
 
 echo "Installing required packages.."
-apt-get -y install git nginx python-pip
+apt-get -y install -y git
+
+echo "Installing and upgrading pip.."
+apt-get -y install python-setuptools
+easy_install -U pip
 
 echo "Installing required packages for NFS file sharing for vagrant.."
 apt-get -y install nfs-common
@@ -26,21 +30,6 @@ apt-get -y install python-dev libpq-dev
 
 echo "Installing virtualenvwrapper from pip.."
 pip install virtualenvwrapper
-
-##
-#	Configure nginx
-##
-echo "Configuring nginx.."
-
-rm --force /etc/nginx/sites-enabled/*
-
-cd /etc/nginx/sites-available
-ln --symbolic --force ${PROJECT_DIR}/_conf/etc/nginx/sites-available/site.conf
-
-cd /etc/nginx/sites-enabled
-ln --symbolic --force ../sites-available/site.conf
-
-service nginx restart
 
 ##
 #	Setup the database
@@ -77,8 +66,5 @@ echo "You can start the machine by running: vagrant up"
 echo "You can ssh to the machine by running: vagrant ssh"
 echo "You can stop the machine by running: vagrant halt"
 echo "You can delete the machine by running: vagrant destroy"
-echo ""
-echo "If this is your first time, you should install the virtual machine guest additions."
-echo "To do that, ssh into the machine (vagrant ssh) and run: sudo ./postinstall.sh"
 echo ""
 exit 0
