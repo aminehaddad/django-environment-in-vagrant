@@ -73,7 +73,7 @@ You can now start the development web server:
 
 Access this URL:
 
-	[http://10.10.10.10:8080](http://10.10.10.10:8080/)
+* [http://10.10.10.10:8080](http://10.10.10.10:8080/)
 
 To turn off the virtual machine, run the following from your host terminal:
 
