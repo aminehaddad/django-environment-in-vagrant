@@ -44,10 +44,6 @@ The source code is shared with the virtual machine in this directory:
 
 	cd site
 
-You can pull the latest source code:
-
-	git pull
-
 Always run the following command to use the proper python virtual environment:
 
 	workon site
@@ -86,3 +82,11 @@ To turn on the virtual machine, run the following:
 ## Troubleshooting
 
 This section is reserved for common troubleshooting problems or hints.
+
+#### Question: How can I change the git repository this is committing to?
+
+Answer: You can fix that in the virtual environment by deleting the `.git` directory and re-initializing it. Example:
+
+	vagrant ssh
+	cd site
+	rm -rf .git
