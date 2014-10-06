@@ -13,7 +13,7 @@ echo "Updating package repositories.."
 apt-get update
 
 echo "Installing required packages.."
-apt-get -y install -y git
+apt-get -y install git
 
 echo "Installing and upgrading pip.."
 apt-get -y install python-setuptools
