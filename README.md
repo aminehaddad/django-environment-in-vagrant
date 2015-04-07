@@ -58,9 +58,8 @@ Create a new Django project. Pay attention to the `.` at the end of that command
 
 	django-admin.py startproject my_site .
 
-Setup the database models and, if used, run migrations:
+Setup the database models and run migrations:
 
-	./manage.py syncdb
 	./manage.py migrate
 
 You can now start the development web server:

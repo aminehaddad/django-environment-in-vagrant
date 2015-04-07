@@ -1,14 +1,11 @@
 # Install Django
-Django==1.7.0
+Django==1.8
 
-# Required for Django timezones. This is from the django docs: https://docs.djangoproject.com/en/1.6/topics/i18n/timezones/
+# Required for Django timezones. This is from the django docs: https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/
 pytz
 
 # Postgres Database Adapter (requires 'python-dev' and 'libpq-dev' packages in Ubuntu)
 psycopg2
-
-# Database migrations
-South
 
 # Database config loader
 dj-database-url
