@@ -21,10 +21,10 @@ This is how you install vagrant-vbguest:
 
 Retrieve the source code:
 
-	git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my_project
-	cd my_project
+	git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my-project
+	cd my-project
 
-Where `my_project` is the name of your new website or project.
+Where `my-project` is the name of your new website or project.
 
 ## Starting the virtual machine development environment
 

@@ -26,7 +26,7 @@ echo "Installing required packages for postgres.."
 apt-get -y install postgresql
 
 echo "Installing required packages for python package 'psycopg2'.."
-apt-get -y install python-dev libpq-dev
+apt-get -y install python-dev python3-dev libpq-dev
 
 echo "Installing virtualenvwrapper from pip.."
 pip install virtualenvwrapper
@@ -43,18 +43,13 @@ sudo -u postgres psql -c "grant all privileges on database vagrant to vagrant;"
 ##
 #	Setup virtualenvwrapper
 ##
-echo "Installing virtualenvwrapper.."
-if grep --quiet "virtualenvwrapper.sh" ${USER_HOME}/.bashrc; then
-	echo "virtualenvwrapper already installed."
-else
-	echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${USER_HOME}/.bashrc
-fi
+echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${USER_HOME}/.bashrc
 
 ##
 #	Setup virtualenv
 ##
 echo "Install the virtual environment.."
-sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv site; deactivate;"
+sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv --python=`which python3` site; deactivate;"
 
 ##
 #	Setup is complete.
