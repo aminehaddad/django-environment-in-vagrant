@@ -49,7 +49,7 @@ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${USER_HOME}/.bashrc
 #	Setup virtualenv
 ##
 echo "Install the virtual environment.."
-sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv --python=`which python3` site; deactivate;"
+sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv --python=`which python3` site-python3; deactivate;mkvirtualenv site; deactivate;"
 
 ##
 #	Setup is complete.

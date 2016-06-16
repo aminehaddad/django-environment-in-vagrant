@@ -48,6 +48,10 @@ Always run the following command to use the proper python virtual environment:
 
 	workon site
 
+If you want to use python 3, use this virtual environment:
+
+	workon site-python3
+
 Install the required python packages:
 
 	pip install -r requirements.txt
