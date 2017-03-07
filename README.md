@@ -48,9 +48,9 @@ Always run the following command to use the proper python virtual environment:
 
 	workon site
 
-If you want to use python 3, use this virtual environment:
+If you want to use python 2, use this virtual environment:
 
-	workon site-python3
+	workon site-python2
 
 Install the required python packages:
 
@@ -93,3 +93,20 @@ Answer: You can fix that in the virtual environment by deleting the `.git` direc
 	vagrant ssh
 	cd site
 	rm -rf .git
+
+#### Question: How to backup and restore database in Vagrant?
+
+To backup database, run the following:
+
+	vagrant ssh
+	cd site
+	sudo -u postgres pg_dump vagrant > db-backup.sql
+
+To restore database backup, run the following:
+
+	vagrant ssh
+	cd site
+	sudo -u postgres psql -c "drop database vagrant;"
+	sudo -u postgres psql -c "create database vagrant;"
+	sudo -u postgres psql -c "grant all privileges on database vagrant to vagrant;"
+	sudo -u postgres psql vagrant < db-backup.sql
