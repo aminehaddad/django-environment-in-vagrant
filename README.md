@@ -70,6 +70,10 @@ You can now start the development web server:
 
 	./manage.py runserver 0.0.0.0:8080
 
+Django requires the IP address of the Virtual Machine in the `my_site/settings.py` file for the setting `ALLOWED_HOSTS`:
+
+	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
+
 Access this URL:
 
 * [http://10.10.10.10:8080](http://10.10.10.10:8080/)
