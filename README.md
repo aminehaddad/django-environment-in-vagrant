@@ -26,6 +26,16 @@ Retrieve the source code:
 
 Where `my-project` is the name of your new website or project.
 
+## (Optional) Setting it up for Windows
+
+You need to modify the Vagrantfile if you are running Windows by replacing:
+
+	config.vm.network "private_network", ip: "10.10.10.10"
+
+with:
+
+	config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+
 ## Starting the virtual machine development environment
 
 The following command will start the environment:
@@ -74,9 +84,13 @@ Django requires the IP address of the Virtual Machine in the `my_site/settings.p
 
 	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
 
-Access this URL:
+Access this URL for MacOS/Linux:
 
 * [http://10.10.10.10:8080](http://10.10.10.10:8080/)
+
+Access this URL for Windows:
+
+* [http://127.0.0.1:8080](http://127.0.0.1:8080/)
 
 To turn off the virtual machine, run the following from your host terminal:
 

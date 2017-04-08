@@ -7,8 +7,7 @@ Vagrant.configure("2") do |config|
 
   # For WINDOWS (comment the OSX/LINUX and uncomment this line)
   # For WINDOWS, you can access it using http://127.0.0.1:8080/
-  # config.vm.network "forwarded_port", guest: 8080, host: 8080
-
+  # config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   config.vm.synced_folder ".", "/home/vagrant/site"
   config.vm.provision "shell", path: "./_conf/vagrant_setup.sh"
 end
