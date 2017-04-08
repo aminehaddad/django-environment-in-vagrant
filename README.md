@@ -80,6 +80,11 @@ You can now start the development web server:
 
 	./manage.py runserver 0.0.0.0:8080
 
+For Windows, replace `./manage.py` with `python manage.py`:
+
+	python manage.py migrate
+	python manage.py runserver 0.0.0.0:8080
+
 Django requires the IP address of the Virtual Machine in the `my_site/settings.py` file for the setting `ALLOWED_HOSTS`:
 
 	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
