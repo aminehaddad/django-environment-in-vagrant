@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PROJECT_DIR=/home/vagrant/site
-USER_HOME=/home/vagrant
+PROJECT_DIR=/home/ubuntu/site
+USER_HOME=/home/ubuntu
 
 echo "Environment installation is beginning. This may take a few minutes.."
 
@@ -49,7 +49,7 @@ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${USER_HOME}/.bashrc
 #	Setup virtualenv
 ##
 echo "Install the virtual environment.."
-sudo su - vagrant /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv --python=`which python3` site; deactivate;mkvirtualenv --python=`which python2` site-python2; deactivate;"
+sudo su - ubuntu /bin/bash -c "source /usr/local/bin/virtualenvwrapper.sh;cd ${PROJECT_DIR};mkvirtualenv --python=`which python3` site; deactivate;mkvirtualenv --python=`which python2` site-python2; deactivate;"
 
 ##
 #	Setup is complete.
