@@ -151,7 +151,7 @@ The file `requirements-dev.txt`:
 	# Django Debug Toolbar (for queries)
 	django-debug-toolbar==2.2
 
-## (Optional) Create multiple `settings.py` files (required for different environments:
+## (Optional) Create multiple `settings.py` files (required for different environments):
 
 Step 1: Temporarily rename `settings.py` to `settings-temp.py`.
 
