@@ -4,7 +4,7 @@ Django
 # Required for Django timezones. This is from the django docs: https://docs.djangoproject.com/en/dev/topics/i18n/timezones/
 pytz
 
-# Postgres Database Adapter (requires 'python-dev' and 'libpq-dev' packages in Ubuntu)
+# Postgres Database Adapter (requires 'python3-dev' and 'libpq-dev' packages in Ubuntu)
 psycopg2
 
 # Database config loader

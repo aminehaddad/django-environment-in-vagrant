@@ -12,9 +12,14 @@ local_settings.py
 
 # Ignore collected static files
 /static/
+/staticfiles/
 
 # Ignore vagrant files
 .vagrant
 
 # Ignore db.sqlite3
 db.sqlite3
+
+# Ignore coverage test results
+/_test_results/
+.coverage
