@@ -58,9 +58,9 @@ Always run the following command to use the proper python virtual environment:
 
 	workon site
 
-Install the required python packages:
+Install the required python packages (development ones included):
 
-	pip install -r requirements.txt
+	pip install -r requirements-dev.txt
 
 ## Setting up a Django project
 
@@ -140,12 +140,12 @@ The file `requirements-dev.txt`:
 	-r requirements-base.txt
 
 	# Coverage (for testing)
-	coverage==5.1
+	coverage==5.2.1
 
 	# Django extensions (for testing).
 	# Used to generate model graph with command:
 	# ./manage.py graph_models -a -g -o models.png
-	django-extensions==3.0.1
+	django-extensions==3.0.3
 	pygraphviz==1.5
 
 	# Django Debug Toolbar (for queries)
