@@ -427,7 +427,7 @@ Step 15: In `manage.py` and `my_site/wsgi.py` and (untested) `my_site/asgi.py`, 
 
 ## Create `runtime.txt` for Heroku:
 
-	python-3.8.3
+	python-3.8.5
 
 Note: this should NOT have a newline. It tells Heroku which python version to use.
 
