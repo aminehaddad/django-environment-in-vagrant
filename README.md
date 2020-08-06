@@ -111,7 +111,7 @@ The file `requirements.txt`:
 The file `requirements-base.py`:
 
 	# Install Django
-	Django==3.0.8
+	Django==3.0.9
 
 	# Required for Django timezones.
 	pytz==2020.1
@@ -145,8 +145,8 @@ The file `requirements-dev.txt`:
 	# Django extensions (for testing).
 	# Used to generate model graph with command:
 	# ./manage.py graph_models -a -g -o models.png
-	django-extensions==3.0.3
-	pygraphviz==1.5
+	django-extensions==3.0.4
+	pygraphviz==1.6
 
 	# Django Debug Toolbar (for queries)
 	django-debug-toolbar==2.2
