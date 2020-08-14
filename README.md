@@ -24,11 +24,11 @@ Retrieve the source code:
 	git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my-project
 	cd my-project
 
-Where `my-project` is the name of your new website or project.
+Where `my-project` is the name of your new website or project. It uses dashes and can be called anything such as `sports-scores-online`, `live-messenger`, `haircut-centers`, etc. For now, we'll just use `my-project`.
 
-## (Optional) Setting it up for Windows
+## (Optional) Vagrant modification for Windows
 
-You need to modify the Vagrantfile if you are running Windows by replacing:
+You need to modify the `Vagrantfile` if you are running Windows by replacing:
 
 	config.vm.network "private_network", ip: "10.10.10.10"
 
@@ -42,7 +42,7 @@ The following command will start the environment:
 
 	vagrant up
 
-The installation script will run within the virtual machine if it is the first time it is started (in order to install the required packages).
+The installation script `_conf/vagrant_setup.sh` will run within the virtual machine if it is the first time it is started (in order to install the required packages). If you `vagrant up` after the installation, it will not run the installation script.
 
 ## Setting up the virtual machine development environment
 
@@ -60,7 +60,19 @@ Always run the following command to use the proper python virtual environment:
 
 Install the required python packages (development ones included):
 
-	pip install -r requirements-dev.txt
+	pip install -r requirements.txt
+
+Note: it is highly recommended to modify `requirements.txt` in order to have it manually update to the latest version of each requirement. To do so, you modifiy `requirements.txt` to look like this:
+
+	Django==3.0
+	pytz==2020.1
+	...
+
+To see which packages are out of date, you can run the following command:
+
+	pip list -o
+
+This will show you the list of outdated versions. You would need to run the `pip install -r requirements.txt` command again to install/update the new packages.
 
 ## Setting up a Django project
 
@@ -72,6 +84,10 @@ Setup the database models and run migrations:
 
 	./manage.py migrate
 
+Django requires the IP address of the Virtual Machine in the `my_site/settings.py` file for the setting `ALLOWED_HOSTS`:
+
+	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
+
 You can now start the development web server:
 
 	./manage.py runserver 0.0.0.0:8080
@@ -80,10 +96,6 @@ For Windows, replace `./manage.py` with `python manage.py`:
 
 	python manage.py migrate
 	python manage.py runserver 0.0.0.0:8080
-
-Django requires the IP address of the Virtual Machine in the `my_site/settings.py` file for the setting `ALLOWED_HOSTS`:
-
-	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
 
 Access this URL for MacOS/Linux:
 
@@ -101,6 +113,52 @@ To turn on the virtual machine, run the following:
 
 	vagrant up
 
+## Creating your first application
+
+We went over the creation of `my-project` and `my_site`. Now, we need to create `apps` to start developing the project and we will call our first app `my_landing`:
+
+	cd ~/site
+	./manage.py startapp my_landing
+
+Your app `my_landing` is now created.
+
+## Open an editor to tell the app how to handle requests/responses:
+
+Edit the apps `my_landing/urls.py` file to add a couple of URLs:
+
+	from django.urls import path
+
+	from . import views
+
+	urlpatterns = [
+		path('', views.landing, name='landing'),
+		path('contact/', views.contact, name='contact'),
+	]
+
+Edit the apps `my_landing/views.py` to show how to handle requests and responses for a couple URLs:
+
+	from django.http import HttpResponse
+
+	def landing(request):
+		return HttpResponse("This is the landing page.")
+
+	def contact(request):
+		return HttpResponse("You can contact us by calling 123-456-7890.")
+
+Edit the `my_project/urls.py` to tell it to allow `my_landing/urls.py` in the project:
+
+	from django.contrib import admin
+	from django.urls import include, path
+
+	urlpatterns = [
+		path('polls/', include('polls.urls')),
+		path('admin/', admin.site.urls),
+	]
+
+You can continue creating more apps and views and so on!
+
+# Continue reading to be able to have production environments.
+
 ## (Optional) Create multiple `requirements.txt` files (supports Heroku as well)
 
 The file `requirements.txt`:
@@ -111,7 +169,7 @@ The file `requirements.txt`:
 The file `requirements-base.py`:
 
 	# Install Django
-	Django==3.0.9
+	Django==3.1
 
 	# Required for Django timezones.
 	pytz==2020.1
@@ -352,7 +410,7 @@ Step 10: Create `settings/heroku.py`:
 		},
 	}
 
-NOTE: If you already created your Heroku program, these are settings you need to add to your Heroku app:
+NOTE: Create a Heroku app on their website prior to hosting there. If you already created your Heroku program, these are settings you need to add to both your Heroku app and modify `settings/heroku.py` to read them. These settings are needed to match the ones above:
 
 	ALLOWED_HOSTS_IMPORT = my-site-staging.herokuapp.com
 	CONN_MAX_AGE = 600
@@ -366,7 +424,7 @@ NOTE: If you already created your Heroku program, these are settings you need to
 	SESSION_COOKIE_SECURE = True
 	SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-1. Don't forget to generate a new SECRET_KEY.
+1. Don't forget to generate a new SECRET_KEY and put it on Heroku.
 
 2. DJANGO_DEBUG being an empty string means it is NOT in debug mode.
 
@@ -416,7 +474,7 @@ Step 14: (Optional) Go to `my_site/urls.py` and modify it to support `settings.D
 		path('', include('my_toys.urls')),
 	]
 
-Step 15: In `manage.py` and `my_site/wsgi.py` and (untested) `my_site/asgi.py`, modify `DJANGO_SETTINGS_MODULE` to aim for the file `settings/local.py`:
+Step 15: In `manage.py` and `my_site/wsgi.py` and `my_site/asgi.py`, modify `DJANGO_SETTINGS_MODULE` to aim for the file `settings/local.py`:
 
 	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_site.settings.local")
 
@@ -477,22 +535,7 @@ To make an image of database models, run the following:
 
 	./manage.py graph_models -a -g -o models-1.png
 
-#### Question: How to backup and restore database in Vagrant?
-
-To backup database, run the following:
-
-	vagrant ssh
-	cd site
-	sudo -u postgres pg_dump vagrant > db-backup.sql
-
-To restore database backup, run the following:
-
-	vagrant ssh
-	cd site
-	sudo -u postgres psql -c "drop database vagrant;"
-	sudo -u postgres psql -c "create database vagrant;"
-	sudo -u postgres psql -c "grant all privileges on database vagrant to vagrant;"
-	sudo -u postgres psql vagrant < db-backup.sql
+It would be nice to keep history of `models-1.png` and `models-2.py` and `models-3.png` and so on.
 
 #### Question: How to backup and restore database in Vagrant?
 
@@ -540,3 +583,5 @@ You can now push to GitHub and Heroku as follows (including going into /bin/bash
 
 	git push my-site-production master
 	heroku run --remote my-site-production /bin/bash
+
+The `heroku run` command is optional.
