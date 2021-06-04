@@ -1,6 +1,6 @@
 # Install Django. 
 # Avoiding the new 3.1 until a few tests are done.
-Django==3.0.9
+Django==3.1.9
 
 # Required for Django timezones. This is from the django docs: https://docs.djangoproject.com/en/dev/topics/i18n/timezones/
 pytz
