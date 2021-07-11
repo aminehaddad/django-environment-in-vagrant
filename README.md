@@ -383,3 +383,11 @@ vagrant ssh
 ```
 
 You should now be able to see your shared files in `~/site/`.
+
+#### Question: I can't edit the files inside the virtual machine (permission denied)
+
+To fix that error, do `vagrant halt` and open `Vagrantfile` file. Modify `config.vm.synced_folder` to have a `mount_options`:
+
+```ruby
+  config.vm.synced_folder ".", "/home/vagrant/site", mount_options: ["dmode=777", "fmode=666"]
+```
