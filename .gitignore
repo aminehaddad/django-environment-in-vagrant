@@ -14,6 +14,9 @@ local_settings.py
 /static/
 /staticfiles/
 
+# Ignore uploaded media files
+/media/
+
 # Ignore vagrant files
 .vagrant
 

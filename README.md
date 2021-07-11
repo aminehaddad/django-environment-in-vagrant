@@ -2,494 +2,185 @@
 
 Quickly build a clean virtual environment ready for Django development.
 
-## Getting started
+### Important:
+
+- VirtualBox currently DOES NOT work with Apple's new M1+ processors. Other options to virtualize on M1+ are Parallels, Fusion, and so on.
+
+- When `~/` is shown below, it means your home directory. This doesn't work in Windows unless you install an alternative `shell`. In this tutorial, it's recommended to use `Git Bash` and we'll show you how to install it.
+
+- In Mac, when using the default shell `zsh` command line, run the following command to allow comments using `#` character: `setopt interactivecomments`
+
+### Required packages to install
 
 Install the following applications in your host operating system:
 
 * [VirtualBox](https://www.virtualbox.org/)
 * [Vagrant](https://www.vagrantup.com/)
+* [GitHub Desktop](https://desktop.github.com/)
+* [Git](https://git-scm.com/downloads)
 
-The following Vagrant plugin is recommended to keep the VirtualBox guest additions automatically updated:
+You've now installed `shells` in your operation system:
 
-* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+* Git Bash (Windows)
+* Terminal (Mac)
+* /bin/bash (unix/linux)
 
-This is how you install vagrant-vbguest:
+Open your `shell` and install [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest):
 
-	vagrant plugin install vagrant-vbguest
+```bash
+vagrant plugin install vagrant-vbguest
+vagrant plugin update vagrant-vbguest
+```
 
-## Getting the source code
+## Let's get started!
 
-Retrieve the source code:
+For this tutorial, we will make a project called `my-project` that shows you a landing page.
 
-	git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my-project
-	cd my-project
+### Getting the source code
 
-Where `my-project` is the name of your new website or project. It uses dashes and can be called anything such as `sports-scores-online`, `live-messenger`, `haircut-centers`, etc. For now, we'll just use `my-project`.
+Open your `shell` to create a new project called `my-project`:
 
-## (Optional) Vagrant modification for Windows
+```bash
+# Create the development directory for all projects (we assume it's just called 'Development')
+mkdir -p ~/Development/
 
-You need to modify the `Vagrantfile` if you are running Windows by replacing:
+# Get source code and put it in `my-project` directory
+cd ~/Development/
 
-	config.vm.network "private_network", ip: "10.10.10.10"
+git clone https://github.com/aminehaddad/django-environment-in-vagrant.git my-project
 
-with:
+cd ~/Development/my-project
 
-	config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+# Delete the `.git` folder since it belongs to `https://github.com/aminehaddad/django-environment-in-vagrant.git`:
+rm -rf ~/Development/my-project/.git/
+```
 
-## Starting the virtual machine development environment
+### Starting the virtual machine development environment
 
 The following command will start the environment:
 
-	vagrant up
+```bash
+# Start the virtual machine:
+vagrant up
 
-The installation script `_conf/vagrant_setup.sh` will run within the virtual machine if it is the first time it is started (in order to install the required packages). If you `vagrant up` after the installation, it will not run the installation script.
+# SSH into the virtual machine:
+vagrant ssh
+```
 
-## Setting up the virtual machine development environment
+### Setting up the virtual machine development environment
 
-SSH into the virtual machine:
+After you `vagrant up` and `vagrant ssh`, we'll install required packages in the virtual machine:
 
-	vagrant ssh
+```bash
+# We work in ~/site/ inside the virtual machine
+cd ~/site/
 
-The source code is shared with the virtual machine in this directory:
+# Always run the following command to use the proper python virtual environment:
+workon site
 
-	cd site
+# Install the required python packages (update `pip` first):
+pip install --upgrade pip
+pip install -r requirements.txt
 
-Always run the following command to use the proper python virtual environment:
+# See if new versions are available for your packages:
+# pip list -o
+```
 
-	workon site
+### Setting up your Django project
 
-Install the required python packages (development ones included):
+Create a new Django project called `my_site`:
 
-	pip install -r requirements.txt
+```bash
+cd ~/site/
+django-admin startproject my_site .
 
-Note: it is highly recommended to modify `requirements.txt` in order to have it manually update to the latest version of each requirement. To do so, you modifiy `requirements.txt` to look like this:
-
-	Django==3.0
-	pytz==2020.1
-	...
-
-To see which packages are out of date, you can run the following command:
-
-	pip list -o
-
-This will show you the list of outdated versions. You would need to run the `pip install -r requirements.txt` command again to install/update the new packages.
-
-## Setting up a Django project
-
-Create a new Django project. Pay attention to the `.` at the end of that command if you did `cd site`:
-
-	django-admin.py startproject my_site .
-
-Setup the database models and run migrations:
-
-	./manage.py migrate
+# We will run `migrations` to update the database:
+./manage.py migrate
+```
 
 Django requires the IP address of the Virtual Machine in the `my_site/settings.py` file for the setting `ALLOWED_HOSTS`:
 
-	ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
+```python
+ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
+```
 
 You can now start the development web server:
 
-	./manage.py runserver 0.0.0.0:8080
+```bash
+./manage.py runserver 0.0.0.0:8080
+```
 
-For Windows, replace `./manage.py` with `python manage.py`:
-
-	python manage.py migrate
-	python manage.py runserver 0.0.0.0:8080
-
-Access this URL for MacOS/Linux:
+Access this URL for MacOS/Linux/Windows (unless you modified `Vagrantfile`):
 
 * [http://10.10.10.10:8080](http://10.10.10.10:8080/)
 
-Access this URL for Windows:
-
-* [http://127.0.0.1:8080](http://127.0.0.1:8080/)
-
 To turn off the virtual machine, run the following from your host terminal:
 
-	vagrant halt -f
+```bash
+vagrant halt
+```
 
 To turn on the virtual machine, run the following:
 
-	vagrant up
+```bash
+vagrant up
+```
 
-## Creating your first application
+### Creating your first application
 
 We went over the creation of `my-project` and `my_site`. Now, we need to create `apps` to start developing the project and we will call our first app `my_landing`:
 
-	cd ~/site
-	./manage.py startapp my_landing
+```bash
+cd ~/site
+./manage.py startapp my_landing
+```
 
-Your app `my_landing` is now created.
+### Open an editor to tell the app how to handle requests/responses:
 
-## Open an editor to tell the app how to handle requests/responses:
+Create and edit the file `my_landing/urls.py` file to add a couple of URLs:
 
-Edit the apps `my_landing/urls.py` file to add a couple of URLs:
+```python
+from django.urls import path
+from . import views
 
-	from django.urls import path
-
-	from . import views
-
-	urlpatterns = [
-		path('', views.landing, name='landing'),
-		path('contact/', views.contact, name='contact'),
-	]
+urlpatterns = [
+    path('', views.landing, name='landing'),
+    path('contact/', views.contact, name='contact'),
+]
+```
 
 Edit the apps `my_landing/views.py` to show how to handle requests and responses for a couple URLs:
 
-	from django.http import HttpResponse
+```python
+from django.shortcuts import render
+from django.http import HttpResponse
 
-	def landing(request):
-		return HttpResponse("This is the landing page.")
+def landing(request):
+    return HttpResponse("This is the landing page.")
 
-	def contact(request):
-		return HttpResponse("You can contact us by calling 123-456-7890.")
+def contact(request):
+    return HttpResponse("You can contact us by calling 123-456-7890.")
+```
 
 Edit the `my_project/urls.py` to tell it to allow `my_landing/urls.py` in the project:
 
-	from django.contrib import admin
-	from django.urls import include, path
+```python
+from django.contrib import admin
+from django.urls import include, path
 
-	urlpatterns = [
-		path('polls/', include('polls.urls')),
-		path('admin/', admin.site.urls),
-	]
+urlpatterns = [
+    path('', include('my_landing.urls')),
+    path('admin/', admin.site.urls),
+]
+```
 
 You can continue creating more apps and views and so on!
 
-# Continue reading to be able to have production environments.
+## Continue reading to be able to have production environments.
 
-## (Optional) Create multiple `requirements.txt` files (supports Heroku as well)
+The changes located in README-PRODUCTION.md.
 
-The file `requirements.txt`:
-
-	# requirements.txt is necessary for Heroku
-	-r requirements-heroku.txt
-
-The file `requirements-base.py`:
-
-	# Install Django
-	Django==3.1
-
-	# Required for Django timezones.
-	pytz==2020.1
-
-	# Postgres Database Adapter (requires 'python3-dev' and 'libpq-dev' packages in Ubuntu)
-	psycopg2
-
-	# Database config loader
-	dj-database-url==0.5.0
-
-	# Used for serving static files
-	dj-static==0.0.6
-
-The file `requirements-heroku.txt`:
-
-	# Install base packages
-	-r requirements-base.txt
-
-	# (Heroku) Python WSGI HTTP server.
-	gunicorn==20.0.4
-	gevent==20.6.2
-
-The file `requirements-dev.txt`:
-
-	# Install base packages
-	-r requirements-base.txt
-
-	# Coverage (for testing)
-	coverage==5.2.1
-
-	# Django extensions (for testing).
-	# Used to generate model graph with command:
-	# ./manage.py graph_models -a -g -o models.png
-	django-extensions==3.0.4
-	pygraphviz==1.6
-
-	# Django Debug Toolbar (for queries)
-	django-debug-toolbar==2.2
-
-## (Optional) Create multiple `settings.py` files (required for different environments):
-
-Step 1: Temporarily rename `settings.py` to `settings-temp.py`.
-
-Step 2: Create a folder called `settings`.
-
-Step 3: Move back the `settings-temp.py` inside the `settings` folder.
-
-Step 4: Rename `settings-temp.py` to `base.py`.
-
-Step 5: Create `get_env_variable` in `base.py`:
-
-	from django.core.exceptions import ImproperlyConfigured
-
-	def get_env_variable(var_name, default=None, required_from_environment=False):
-	'''
-	Returns the environment variable 'var_name'.
-
-	If 'required_from_environment' is False and 'var_name' is not available in environment, returns 'default'.
-	If 'required_from_environment' is True and 'var_name' is not available in environment, raises ImproperlyConfigured exception.
-	'''
-	try:
-		return os.environ[var_name]
-	except KeyError:
-		if required_from_environment:
-			error_msg = "Set the {0} environment variable".format(var_name)
-			raise ImproperlyConfigured(error_msg)
-		else:
-			return default
-
-Step 6: (Optional) Add custom environment variables that you want to use using `get_env_variable`:
-
-	# Django's admin
-	DJANGO_ADMIN_ENABLED = True if get_env_variable('DJANGO_ADMIN_ENABLED', False) else False
-
-	# Google Analytics settings
-	GOOGLE_ANALYTICS_KEY = get_env_variable('GOOGLE_ANALYTICS_KEY', None)
-
-	# Facebook SDK settings
-	FACEBOOK_APP_ID = get_env_variable('FACEBOOK_APP_ID', None)
-
-Step 7: Delete all of these lines in `base.py` (they will appear later):
-
-	SECRET_KEY
-	DEBUG
-	ALLOWED_HOSTS
-	DATABASES
-
-Step 8: Create `settings/dev.py`:
-
-	from .base import *
-	import dj_database_url
-
-	# Django settings
-	DEBUG = True
-	SECRET_KEY = 'p1t2bhbws$mjp2*=6mlw&+00k33s4ye2zx%9k#qb(oc*a-%$wt'
-	ALLOWED_HOSTS = ['*']
-
-	# Database settings
-	DATABASES = {
-		'default': dj_database_url.config(default='postgres://vagrant:vagrant@127.0.0.1/vagrant'),
-	}
-
-	# Enable the /admin/
-	DJANGO_ADMIN_ENABLED = True
-
-	# Enable the django-extensions app to generate models.png
-	INSTALLED_APPS += [
-		'django_extensions',
-	]
-
-	GRAPH_MODELS = {
-		# Defaults:
-		'all_applications': True,
-		'group_models': True,
-
-		# Options:
-		# 'verbose_names': True,
-		# 'json': True,
-		# 'disable_fields': True,
-
-		'include_models': ','.join([
-		]),
-
-		'exclude_models': ','.join([
-			# Remove Django's defaults
-			'LogEntry',
-			'AbstractUser',
-			'AbstractBaseSession',
-			'Session',
-
-			# To exclude 'ContentType', 'Permission', and 'Group': you need to add their fields to exclude_columns
-			'ContentType',
-			'Permission',
-			'Group',
-
-			# Remove some abstract models
-			'TimestampedModel',
-			'RandomUUIDModel',
-			'SoftDeleteModel',
-
-			# Remove the 'User' model (needs 'user' in exclude_columns)
-			# 'User',
-		]),
-
-		'exclude_columns': ','.join([
-			# These need to be removed to exclude models in exclude_models
-			'content_type',
-			'user_permissions',
-			'permissions',
-			'groups',
-
-			# These need to be removed to exclude the User model
-			# 'user',
-		]),
-	}
-
-	# This LOGGING outputs queries in console.
-	# LOGGING = {
-	#	 'version': 1,
-	#	 'filters': {
-	#		 'require_debug_true': {
-	#			 '()': 'django.utils.log.RequireDebugTrue',
-	#		 }
-	#	 },
-	#	 'handlers': {
-	#		 'console': {
-	#			 'level': 'DEBUG',
-	#			 'filters': ['require_debug_true'],
-	#			 'class': 'logging.StreamHandler',
-	#		 }
-	#	 },
-	#	 'loggers': {
-	#		 'django.db.backends': {
-	#			 'level': 'DEBUG',
-	#			 'handlers': ['console'],
-	#		 }
-	#	 }
-	# }
-
-Step 9: Generate a new `SECRET_KEY` for `settings/dev.py` (in console):
-
-	python -c 'import random; print "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])'
-
-Step 10: Create `settings/heroku.py`:
-
-	from .base import *
-	import dj_database_url
-
-	# Django settings
-	DEBUG = True if get_env_variable('DJANGO_DEBUG', False) else False
-	SECRET_KEY = get_env_variable('SECRET_KEY', required_from_environment=True)
-
-	ALLOWED_HOSTS_IMPORT = get_env_variable('ALLOWED_HOSTS_IMPORT', required_from_environment=True)
-	ALLOWED_HOSTS = ALLOWED_HOSTS_IMPORT.split(',')
-
-	# Database settings
-	DATABASE_URL = get_env_variable('DATABASE_URL', required_from_environment=True)
-	DATABASES = {
-		'default': dj_database_url.config(env='DATABASE_URL'),
-	}
-	CONN_MAX_AGE = int(get_env_variable('CONN_MAX_AGE', '0'))
-
-	# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-	# From https://devcenter.heroku.com/articles/getting-started-with-django
-	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-	# Redirect HTTP to HTTPS
-	SECURE_SSL_REDIRECT = True if get_env_variable('SECURE_SSL_REDIRECT', False) else False
-
-	# Only allow cookies over SSL
-	SESSION_COOKIE_SECURE = True if get_env_variable('SESSION_COOKIE_SECURE', False) else False
-	CSRF_COOKIE_SECURE = True if get_env_variable('CSRF_COOKIE_SECURE', False) else False
-	SESSION_COOKIE_AGE = int(get_env_variable('SESSION_COOKIE_AGE', '1209600'))
-
-	# Expire login sessions when the 'browser' closes
-	SESSION_EXPIRE_AT_BROWSER_CLOSE = True if get_env_variable('SESSION_EXPIRE_AT_BROWSER_CLOSE', False) else False
-
-	# Static files settings
-	STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles')
-
-	# Static files should be hashed to prevent problems with cache (and improve cache)
-	# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-
-	# Show exceptions in console
-	LOGGING = {
-		'version': 1,
-		'disable_existing_loggers': False,
-		'handlers': {
-			'console': {
-				'class': 'logging.StreamHandler',
-			},
-		},
-		'loggers': {
-			'django': {
-				'handlers': ['console'],
-				'level': get_env_variable('DJANGO_LOG_LEVEL', 'ERROR'),
-			},
-		},
-	}
-
-NOTE: Create a Heroku app on their website prior to hosting there. If you already created your Heroku program, these are settings you need to add to both your Heroku app and modify `settings/heroku.py` to read them. These settings are needed to match the ones above:
-
-	ALLOWED_HOSTS_IMPORT = my-site-staging.herokuapp.com
-	CONN_MAX_AGE = 600
-	CSRF_COOKIE_SECURE = True
-	DATABASE_URL = (generated by Heroku or you can point it elsewhere like AWS)
-	DJANGO_ADMIN_ENABLED = True
-	DJANGO_DEBUG = ''
-	DJANGO_SETTINGS_MODULE = my_site.settings.heroku
-	SECRET_KEY = (a new generated SECRET_KEY)
-	SECURE_SSL_REDIRECT = True
-	SESSION_COOKIE_SECURE = True
-	SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-1. Don't forget to generate a new SECRET_KEY and put it on Heroku.
-
-2. DJANGO_DEBUG being an empty string means it is NOT in debug mode.
-
-Step 11: Create `settings/local.py` (and commit the following, but only once to warn other users not to commit their local changes to develop):
-
-	# NOTE: DO NOT COMMIT LOCAL.PY. You can add your changes here for local development (this extends dev.py so you can overwrite stuff from there but DO NOT COMMIT!)
-	from .dev import *
-
-Step 12: Create `settings/test.py`:
-
-	from .base import *
-
-	SECRET_KEY = '(#7-em@uggczd(&63jeqfxscpk)o1k^v#p)9oofl3i-#v1u(8f'
-
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.sqlite3',
-			'NAME': ':memory:',
-			'USER': '',
-			'PASSWORD': '',
-			'HOST': '',
-			'PORT': '',
-		}
-	}
-
-Step 13: Generate a new `SECRET_KEY` for `settings/test.py` (in console):
-
-	python -c 'import random; print "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])'
-
-Step 14: (Optional) Go to `my_site/urls.py` and modify it to support `settings.DJANGO_ADMIN_ENABLED`:
-
-	from django.contrib import admin
-	from django.urls import path
-	from django.conf import settings
-
-	urlpatterns = []
-
-	if settings.DJANGO_ADMIN_ENABLED:
-		urlpatterns += [
-			path('admin/', admin.site.urls),
-		]
-
-	# You should also add other apps in `urls.py` and point to their `urls.py`:
-	urlpatterns += [
-		path('', include('my_landing.urls')),
-		path('', include('my_dashboard.urls')),
-		path('', include('my_toys.urls')),
-	]
-
-Step 15: In `manage.py` and `my_site/wsgi.py` and `my_site/asgi.py`, modify `DJANGO_SETTINGS_MODULE` to aim for the file `settings/local.py`:
-
-	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "my_site.settings.local")
-
-## Create `Procfile` for Heroku:
-
-	release: python manage.py migrate
-	web: gunicorn my_site.wsgi:application -k gevent -w 4
-
-## Create `runtime.txt` for Heroku:
-
-	python-3.8.5
-
-Note: this should NOT have a newline. It tells Heroku which python version to use.
-
-## Troubleshooting
+## Troubleshooting / Q&A
 
 This section is reserved for common troubleshooting problems or hints.
 
@@ -497,91 +188,172 @@ This section is reserved for common troubleshooting problems or hints.
 
 Answer: You can fix that in the virtual environment by deleting the `.git` directory and re-initializing it. Example:
 
-	vagrant ssh
-	cd site
-	rm -rf .git
+```bash
+cd ~/Development/my-project/
+rm -rf .git
+```
 
 #### Question: Running test cases
 
-Create `.coveragerc` first:
+Add `coverage` package in `requirements.txt`:
 
-	[run]
-	omit =
-		*/.virtualenvs/*
-		*/__init__.py
-		*/tests.py
-		*/migrations/*
-		manage.py
-		my_site/*
+```python
+# Coverage (for testing)
+coverage
+```
 
-	[html]
-	directory = _test_results
+Install the packages:
 
-This is how you run all test cases:
+```bash
+pip install -r requirements.txt
+```
 
-	rm -rf _test_results
-	coverage run ./manage.py test --settings=my_site.settings.test
-	coverage html
+Create `~/site/.coveragerc` file:
+
+```
+[run]
+omit =
+	*/.virtualenvs/*
+	*/__init__.py
+	*/tests.py
+	*/migrations/*
+	manage.py
+	my_site/*
+
+[html]
+directory = _test_results
+```
+
+Run all test cases:
+
+```bash
+rm -rf ~/site/_test_results
+coverage run ./manage.py test
+coverage html
+```
 
 Shortcut:
 
-	rm -rf _test_results && coverage run ./manage.py test --settings=my_site.settings.test && coverage html
+```bash
+rm -rf ~/site/_test_results && coverage run ./manage.py test && coverage html
+```
 
-It will generate HTML files with all test results.
+It will generate HTML files with all test results. Just find and open the `index.html` to see results.
 
 #### Question: How to make a graph image of the database models?
 
-To make an image of database models, run the following:
+Modify your `requirements.txt` file:
 
-	./manage.py graph_models -a -g -o models-1.png
+```python
+# Django extensions (for testing).
+# Used to generate model graph with command:
+# ./manage.py graph_models -a -g -o models.png
+django-extensions
+pygraphviz
+```
+
+Install the packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Modify your `my_site/settings.py` file to add it in `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'django_extensions', # <-- here
+]
+```
+
+Run the following command to generate a file with the models:
+
+```bash
+./manage.py graph_models -a -g -o models-1.png
+```
 
 It would be nice to keep history of `models-1.png` and `models-2.py` and `models-3.png` and so on.
 
 #### Question: How to backup and restore database in Vagrant?
 
-To backup database, run the following:
+To backup database (after `vagrant ssh`), run the following:
 
-	vagrant ssh
-	cd site
-	sudo -u postgres pg_dump vagrant > db-backup.sql
+```bash
+cd ~/site/
+sudo -u postgres pg_dump vagrant > db-backup-1.sql
+```
 
 To restore database backup, run the following:
 
-	vagrant ssh
-	cd site
-	sudo -u postgres psql -c "drop database vagrant;"
-	sudo -u postgres psql -c "create database vagrant;"
-	sudo -u postgres psql -c "alter role vagrant SET client_encoding TO 'utf8';"
-	sudo -u postgres psql -c "alter role vagrant SET default_transaction_isolation TO 'read committed';"
-	sudo -u postgres psql -c "alter role vagrant SET timezone TO 'UTC';"
-	sudo -u postgres psql -c "grant all privileges on database vagrant to vagrant;"
-	sudo -u postgres psql vagrant < db-backup.sql
+```bash
+cd ~/site/
+sudo -u postgres psql -c "drop database vagrant;"
+sudo -u postgres psql -c "create database vagrant;"
+sudo -u postgres psql -c "alter role vagrant SET client_encoding TO 'utf8';"
+sudo -u postgres psql -c "alter role vagrant SET default_transaction_isolation TO 'read committed';"
+sudo -u postgres psql -c "alter role vagrant SET timezone TO 'UTC';"
+sudo -u postgres psql -c "grant all privileges on database vagrant to vagrant;"
+sudo -u postgres psql vagrant < db-backup-1.sql
+```
 
 To import in Vagrant when exported from Heroku:
 
-	pg_restore --verbose --clean --no-acl --no-owner -h localhost -U vagrant -d vagrant heroku-export.db
+```bash
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U vagrant -d vagrant heroku-export-1.db
+```
 
 #### Question: How to deal with Heroku CLI?
 
-First, you need to install Brew:
+For Windows, download from [Heroku](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
 
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+For Linux/Mac, install Brew on your operating system:
 
-Then, you need to install Heroku CLI:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+```
 
-	brew tap heroku/brew && brew install heroku
-	heroku auth:login
+Then, you need to install Heroku CLI on your operating system:
 
-It will give you a link to login to Heroku. Afterwards, you can use the 'heroku' commands.
+```bash
+brew tap heroku/brew && brew install heroku
+heroku auth:login
+```
+
+It will give you a link to login to Heroku. Afterwards, you can use the `heroku` command.
 
 You can now push to GitHub and Heroku as follows (including going into /bin/bash for Heroku):
 
-	git push origin
+```bash
+# To GitHub
+git push origin
+```
 
-	git push my-site-staging master
-	heroku run --remote my-site-staging /bin/bash
+```bash
+# To Heroku staging (so you can perform test)
+git push my-project-staging master
+```
 
-	git push my-site-production master
-	heroku run --remote my-site-production /bin/bash
+```bash
+# To Heroku production
+git push my-project-production master
+```
 
-The `heroku run` command is optional.
+You can also use the `heroku run` to SSH to your currently running Heroku instance:
+
+```bash
+# For staging
+heroku run --remote my-project-staging /bin/bash
+```
+
+
+```bash
+# For production
+heroku run --remote my-project-production /bin/bash
+```

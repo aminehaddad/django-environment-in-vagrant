@@ -1,42 +1,59 @@
 #!/bin/bash
-
 USER_HOME=/home/vagrant
 PROJECT_DIR=/home/vagrant/site
 
 ##
-#	Updating repositories..
+#	Add/Update the package repositories..
 ##
-echo "Updating package repositories.."
+add-apt-repository -y ppa:deadsnakes/ppa
 apt-get -y update
 apt-get -y upgrade
 
 ##
-#	Setup to share folders between vagrant OS and developer OS
+#	List the packages to be installed..
 ##
-echo "Installing required packages for NFS file sharing for vagrant.."
-apt-get -y install nfs-common
+packagelist=(
+
+	# Install to have common packages installed..
+	software-properties-common
+
+	# Install to share folders between vagrant OS and developer OS..
+	nfs-common
+
+	# Install python3..
+	python3.9
+	libpython3.9-dev python3.9-distutils
+	build-essential libssl-dev libffi-dev
+
+	# Install pip3 and venv..
+	python3-pip
+	python3-venv
+
+	# Install the database..
+	postgresql
+
+	# Install packages for python package 'psycopg2'..
+	python3-dev libpq-dev
+
+	# Install required packages for python package 'pygraphviz' (used by django-extensions to generate graph models)..
+	graphviz graphviz-dev pkg-config
+
+)
 
 ##
-#	Setup python3..
+#	Install the packages..
 ##
-echo "Installing required packages for python3.."
-apt-get -y update
-apt-get -y install software-properties-common
-add-apt-repository -y ppa:deadsnakes/ppa
-apt-get -y install python3.8
-apt-get -y install libpython3.8-dev
-apt-get -y install build-essential libssl-dev libffi-dev
+apt-get -y install ${packagelist[@]}
 
 ##
-#	Setup pip3, and the security tools with it..
+#	Setup pip3 the virtual environment..
 ##
-echo "Installing and setting up pip3.."
-apt-get -y install python3-pip
-apt-get -y install python3-venv
-
-echo "Setup pip3 environments.."
 pip3 install virtualenv virtualenvwrapper
+# Note: pip install --upgrade [package]
 
+##
+#	Setup the virtualwrapper by having a script execute the first time the user connects..
+##
 VIRTUALENVWRAPPER_INSTALLED_FILE=${USER_HOME}/.virtualenvwrapper_installed
 echo "" >> ${USER_HOME}/.bashrc
 echo "VIRTUALENVWRAPPER_INSTALLED_FILE=${VIRTUALENVWRAPPER_INSTALLED_FILE}" >> ${USER_HOME}/.bashrc
@@ -49,7 +66,7 @@ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ${USER_HOME}/.bashrc
 
 echo "if [ ! -f ${VIRTUALENVWRAPPER_INSTALLED_FILE} ]; then" >> ${USER_HOME}/.bashrc
 	echo "cd ${PROJECT_DIR}" >> ${USER_HOME}/.bashrc
-	echo "mkvirtualenv --python=`which python3.8` site" >> ${USER_HOME}/.bashrc
+	echo "mkvirtualenv --python=`which python3.9` site" >> ${USER_HOME}/.bashrc
 	echo "deactivate" >> ${USER_HOME}/.bashrc
 	echo "cd ${USER_HOME}" >> ${USER_HOME}/.bashrc
 echo "fi" >> ${USER_HOME}/.bashrc
@@ -59,18 +76,8 @@ echo "if [ ! -f ${VIRTUALENVWRAPPER_INSTALLED_FILE} ]; then" >> ${USER_HOME}/.ba
 echo "fi" >> ${USER_HOME}/.bashrc
 
 ##
-#	Setup the database
+#	Setup the database..
 ##
-echo "Installing required packages for postgres.."
-apt-get -y install postgresql
-
-echo "Installing required packages for python package 'psycopg2'.."
-apt-get -y install python3-dev libpq-dev
-
-echo "Installing required packages for python package 'pygraphviz' (used by django-extensions to generate graph models).."
-apt-get -y install graphviz graphviz-dev pkg-config
-
-echo "Configuring postgres.."
 sudo -u postgres psql -c "create user vagrant with password 'vagrant';"
 sudo -u postgres psql -c "create database vagrant;"
 sudo -u postgres psql -c "alter role vagrant SET client_encoding TO 'utf8';"

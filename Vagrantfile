@@ -1,16 +1,22 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "bento/ubuntu-20.04"
 
-  # For OSX/LINUX
-  config.vm.network "private_network", ip: "10.10.10.10"
+  if Vagrant::Util::Platform.windows?
+    config.vm.network "private_network", ip: "10.10.10.10"
+  elsif Vagrant::Util::Platform.darwin?
+    config.vm.network "private_network", ip: "10.10.10.10"
+  else
+    config.vm.network "private_network", ip: "10.10.10.10"
+  end
 
-  # For WINDOWS (comment the OSX/LINUX and uncomment this line)
-  # For WINDOWS, you can access it using http://127.0.0.1:8080/
-  # config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   config.vm.synced_folder ".", "/home/vagrant/site"
   config.vm.provision "shell", path: "./_conf/vagrant_setup.sh"
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 512
+  end
+
+  if Vagrant.has_plugin?("vagrant-vbguest")
+    config.vbguest.auto_update = false  
   end
 end
