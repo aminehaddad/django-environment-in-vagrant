@@ -352,7 +352,6 @@ You can also use the `heroku run` to SSH to your currently running Heroku instan
 heroku run --remote my-project-staging /bin/bash
 ```
 
-
 ```bash
 # For production
 heroku run --remote my-project-production /bin/bash
