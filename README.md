@@ -131,7 +131,7 @@ vagrant up
 We went over the creation of `my-project` and `my_site`. Now, we need to create `apps` to start developing the project and we will call our first app `my_landing`:
 
 ```bash
-cd ~/site
+cd ~/site/
 ./manage.py startapp my_landing
 ```
 
@@ -356,3 +356,30 @@ heroku run --remote my-project-staging /bin/bash
 # For production
 heroku run --remote my-project-production /bin/bash
 ```
+
+#### Question: error "Vagrant was unable to mount VirtualBox shared folders"
+
+To simply solve this, just do the following:
+
+```bash
+vagrant up
+vagrant ssh
+```
+
+Inside the virtual machine, run this command:
+```bash
+# The fix inside your virtual machine
+sudo ln -sf "$lib_path/$PACKAGE/mount.vboxsf" /sbin
+
+# Exit the virtual machine
+exit
+```
+
+Reboot the virtual machine and connect to it:
+```bash
+vagrant halt
+vagrant up
+vagrant ssh
+```
+
+You should now be able to see your shared files in `~/site/`.
