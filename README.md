@@ -104,6 +104,12 @@ Django requires the IP address of the Virtual Machine in the `my_site/settings.p
 ALLOWED_HOSTS = ['10.10.10.10', '127.0.0.1']
 ```
 
+Generate a new `SECRET_KEY` for `~/site/my_site/settings.py` (in console):
+
+```python
+python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'
+```
+
 You can now start the development web server:
 
 ```bash
@@ -173,6 +179,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 ```
+
+### Create a superuser for yourself
+
+```bash
+cd ~/site/
+./manage.py createsuperuser
+```
+
+You can now login to /admin/.
+
+### What to do next?
 
 You can continue creating more apps and views and so on!
 
@@ -390,4 +407,12 @@ To fix that error, do `vagrant halt` and open `Vagrantfile` file. Modify `config
 
 ```ruby
   config.vm.synced_folder ".", "/home/vagrant/site", mount_options: ["dmode=777", "fmode=666"]
+```
+
+#### Question: How can I generate a new `SECRET_KEY` (in console)
+
+Just `vagrant ssh` and run the following command:
+
+```python
+python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'
 ```
