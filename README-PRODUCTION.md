@@ -25,7 +25,7 @@ Created the file `~/site/requirements-base.txt`:
 
 ```python
 # Install Django
-Django==3.2.5
+Django==3.2.6
 
 # Required for Django timezones.
 pytz==2021.1
@@ -309,7 +309,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 2. DJANGO_DEBUG must have 0 characters to mean FALSE.
 
-#### Step 7: Create `~/site/my_site/settings/local.py` (and commit the following, but only ONCE to warn other users to not commit their local changes to develop):
+#### Step 7: Create `~/site/my_site/settings/local.py` (and commit the following, but only ONCE to warn other users to not commit their local changes to all developers):
 
 ```python
 # NOTE: DO NOT COMMIT LOCAL.PY. You can add your changes here for local development (this extends dev.py so you can overwrite stuff from there but DO NOT COMMIT!)
