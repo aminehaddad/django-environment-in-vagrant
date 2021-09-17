@@ -25,7 +25,7 @@ Created the file `~/site/requirements-base.txt`:
 
 ```python
 # Install Django
-Django==3.2.6
+Django==3.2.7
 
 # Required for Django timezones.
 pytz==2021.1
@@ -48,7 +48,7 @@ Create the file `~/site/requirements-heroku.txt`:
 
 # (Heroku) Python WSGI HTTP server.
 gunicorn==20.1.0
-gevent==21.1.2
+gevent==21.8.0
 ```
 
 Create the file `~/site/requirements-dev.txt`:
@@ -67,7 +67,7 @@ django-extensions==3.1.3
 pygraphviz==1.7
 
 # Django Debug Toolbar (for queries)
-django-debug-toolbar==3.2.1
+django-debug-toolbar==3.2.2
 ```
 
 ### In `~/site/my_site/`, we'll put multiple environment settings files (quick commands)
