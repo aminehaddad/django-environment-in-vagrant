@@ -92,7 +92,9 @@ Create a new Django project called `my_site`:
 
 ```bash
 cd ~/site/
-django-admin startproject my_site .
+
+# Note: the ~/site/ is the root (inside virtual machine) of the new project and is added in case you're in the wrong directory.
+django-admin startproject my_site ~/site/
 
 # We will run `migrations` to update the database:
 ./manage.py migrate
@@ -374,7 +376,7 @@ heroku run --remote my-project-staging /bin/bash
 heroku run --remote my-project-production /bin/bash
 ```
 
-#### Question: error "Vagrant was unable to mount VirtualBox shared folders"
+#### Question: Error "Vagrant was unable to mount VirtualBox shared folders"
 
 To simply solve this, just do the following:
 
@@ -406,7 +408,7 @@ You should now be able to see your shared files in `~/site/`.
 To fix that error, do `vagrant halt` and open `Vagrantfile` file. Modify `config.vm.synced_folder` to have a `mount_options`:
 
 ```ruby
-  config.vm.synced_folder ".", "/home/vagrant/site", mount_options: ["dmode=777", "fmode=666"]
+  config.vm.synced_folder ".", "/home/vagrant/site", mount_options: ["dmode=755", "fmode=644"]
 ```
 
 #### Question: How can I generate a new `SECRET_KEY` (in console)
@@ -416,3 +418,55 @@ Just `vagrant ssh` and run the following command:
 ```python
 python -c 'import random; print("".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]))'
 ```
+
+#### Question: How to SEE if files' End Of Line (`EOL`) uses `LF` or `CRLF`?
+
+Windows uses CRLF (2 characters for newline) for their new lines, whereas other operating systems use just LF (1 character for newline). These CRLF can also end up being used in other files, like `.txt` and `.py`, based on operating system.
+
+This simple command will show you details:
+
+```bash
+# Go to the directory and run the command
+$ cd ~/Development/my-project/
+$ file *
+Vagrantfile:           ASCII text
+_conf:                 directory
+app1:                  directory
+app2:                  directory
+created-mac.py:        ASCII text
+created-virtualbox.py: ASCII text
+created-windows.py:    ASCII text, with CRLF line terminators
+manage.py:             Python script, ASCII text executable
+my_project:            directory
+requirements.txt:      ASCII text
+```
+
+Notice that the file committed from Windows (`created-windows.py`) shows `with CRLF line terminators`.
+
+If you are dealing with different operating systems, you don't want to have CRLF files combined with LF files.
+
+Solution would be to use a file `.gitattributes` to force one way or the other.
+
+#### Question: Why is VirtualBox 6.1.26 causing `E_FAIL (0x80004005)`?
+
+In [VirtualBox 6.1.26](https://www.virtualbox.org/wiki/Changelog), you will see the update in the Changelog:
+
+```
+VBoxHeadless: Running VM will save its state on host shutdown
+```
+
+That update is the cause of this issue specific issue happening:
+
+```bash
+==> default: Booting VM...
+There was an error while executing `VBoxManage`, a CLI used by Vagrant for controlling VirtualBox. This command and stderror is shown below.
+
+Command: ["startvm", "...", "--type", "headless"]
+
+Stderr: VBoxManage.exe: error: The VM session was closed before any attempt to power it on
+VBoxManage.exe: error: Details: code E_FAIL (0x80004005), component SessionMachine, interface ISession
+```
+
+Cause: when you do a `vagrant up`, then `vagrant halt`, then `vagrant up` again, you will (occasionally) see this error.
+
+Solution: reboot your *host* computer. This is a temporary fix until [VirtualBox](https://www.virtualbox.org/wiki/Changelog) gets updated.
