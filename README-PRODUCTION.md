@@ -28,7 +28,7 @@ Created the file `~/site/requirements-base.txt`:
 Django==3.2.7
 
 # Required for Django timezones.
-pytz==2021.1
+pytz==2021.3
 
 # Postgres Database Adapter (requires 'python3-dev' and 'libpq-dev' packages in Ubuntu)
 psycopg2==2.9.1
@@ -58,7 +58,7 @@ Create the file `~/site/requirements-dev.txt`:
 -r requirements-base.txt
 
 # Coverage (for testing)
-coverage==5.5
+coverage==6.0.1
 
 # Django extensions (for testing).
 # Used to generate model graph with command:
