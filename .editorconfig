@@ -1,0 +1,44 @@
+# EditorConfig: https://editorconfig.org/
+root = true
+
+# Defaults
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true 
+
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+# Indent tab
+[*.{html,css,js,sh}]
+indent_style = tab
+
+# Git files
+# [{.gitattributes,.gitignore}]
+# Nothing to add to it
+
+# Markdown files
+[*.{diff, md}]
+trim_trailing_whitespace = false
+
+# Vagrantfile uses 2 spaces for indentation
+[Vagrantfile]
+indent_size = 2
+
+# Hosting for Heroku
+[runtime.txt]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+# [Procfile]
+# Nothing to add to it
+
+# VSCode
+[*.ts]
+indent_style = tab
+indent_size = 2
+
+[*.yml]
+indent_size = 2
