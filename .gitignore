@@ -1,6 +1,8 @@
 ####
 #### CUSTOM
 ####
+
+# Ignore vagrant folders
 .vagrant/
 
 # Ignore collected static and media files
@@ -690,6 +692,18 @@ GitHub.sublime-settings
 ####
 #### END REDIS
 ####
+
+###
+### DROPBOX
+###
+
+.dropbox
+.dropbox.attr
+.dropbox.cache
+
+###
+### END OF DROPBOX
+###
 
 ####
 #### PuTTY

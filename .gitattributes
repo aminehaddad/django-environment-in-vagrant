@@ -1,0 +1,117 @@
+# Note: once added/modified, every developer should run these commands:
+# git rm --cached -r .
+# git reset --hard
+
+* text=auto
+
+*.txt text eol=crlf
+*.py text eol=lf diff=python
+*.json text eol=lf
+*.html text eol=lf diff=html
+*.xhtml text eol=lf diff=html
+*.js text eol=lf
+*.css text eol=lf diff=css
+*.less text eol=lf
+*.scss text eol=lf
+*.map text eol=lf
+
+*.md text eol=lf
+*.po text eol=lf
+*.sh text eol=lf diff=bash
+*.[Bb][Aa][Tt] text eol=crlf
+
+*.csv text eol=lf
+*.coveragerc text eol=lf
+
+*.[Dd][Bb] binary
+*.sql text working-tree-encoding=UTF-16LE eol=CRLF
+*.xml text eol=lf
+*.yml text eol=lf
+*.[Ss][Qq][Ll][Ii][Tt][Ee]3 binary
+
+Vagrantfile text eol=lf
+Procfile text eol=lf
+
+# From https://github.com/alexkaratarakis/gitattributes
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.vbproj text eol=crlf
+*.vcxproj text eol=crlf
+*.vcproj text eol=crlf
+*.dbproj text eol=crlf
+*.fsproj text eol=crlf
+*.lsproj text eol=crlf
+*.wixproj text eol=crlf
+*.modelproj text eol=crlf
+*.sqlproj text eol=crlf
+*.wmaproj text eol=crlf
+*.xproj text eol=crlf
+*.props text eol=crlf
+*.filters text eol=crlf
+*.vcxitems text eol=crlf
+
+# Jupyter notebook
+*.ipynb text eol=lf
+
+# Binary (optional ones included)
+*.[Cc][Oo][Vv][Ee][Rr][Aa][Gg][Ee] binary
+
+# From https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+*.[Aa][Pp][Nn][Gg] binary
+*.[Av][Vv][Ii][Ff] binary
+*.[Gg][Ii][Ff] binary
+*.[Jj][Pp][Gg] binary
+*.[Jj][Pp][Ee][Gg] binary
+*.[Jj][Ff][Ii][Ff] binary
+*.[Pp][Jj][Pp][Ee][Gg] binary
+*.[Pp][Jj][Pp] binary
+*.[Pp][Nn][Gg] binary
+*.[Ww][Ee][Bb][Pp] binary
+
+*.[Bb][Mm][Pp] binary
+*.[Ii][Cc][Oo] binary
+*.[Cc][Uu][Rr] binary
+
+*.[Ji][Pp][Nn][Gg] binary
+*.[Tt][Ii][Ff][Ff] binary
+*.[Tt][Ii][Ff] binary
+
+*.[Ss][Vv][Gg] binary
+*.[Xx][Bb][Mm] binary
+
+# From https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers
+*.3[Gg][Pp] binary
+*.[Aa][Aa][Cc] binary
+*.[Ff][Ll][Aa][Cc] binary
+*.[Mm][Pp][Gg] binary
+*.[Mm][Pp][Ee][Pg] binary
+*.[Mm][Pp]3 binary
+*.[Mm][Pp]4 binary
+*.[Mm]4[Aa] binary
+*.[Mm]4[Vv] binary
+*.[Mm]4[Pp] binary
+*.[Oo][Gg][Aa] binary
+*.[Oo][Gg][Gg] binary
+*.[Oo][Gg][Vv] binary
+*.[Mm][Oo][Vv] binary
+*.[Ww][Aa][Vv] binary
+*.[Ww][Ee][Bb][Mm] binary
+
+# Fonts
+*.[Ee][Oo][Tt] binary
+*.[Oo][Tt][Ff] binary
+*.[Tt][Tt][Ff] binary
+*.[Ww][Oo][Ff][Ff] binary
+*.[Ww][Oo][Ff][Ff]2 binary
+
+# Zips
+*.[Zz][Ii][Pp] binary
+*.[Gg][Zz] binary
+*.[Tt][Aa][Rr] binary
+*.[Tt][Gg][Zz] binary
+*.[Bb][Zz]2 binary
+*.[Rr][Aa][Rr] binary
+*.[Ii][Ss][Oo] binary
+
+# Others
+*.[Pp][Dd][Ff] binary

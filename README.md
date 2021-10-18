@@ -447,6 +447,51 @@ If you are dealing with different operating systems, you don't want to have CRLF
 
 Solution would be to use a file `.gitattributes` to force one way or the other.
 
+#### Question: How to deal with simple `.gitattributes`?
+
+The `.gitattributes` tells `git` how to modify files. Details can be found in [Git documentation](https://git-scm.com/docs/gitattributes).
+
+Note: we include our [.gitattributes](https://github.com/aminehaddad/django-environment-in-vagrant/blob/master/.gitattributes)
+
+Step 1) Make sure your `git status` shows no changes. Make a choice of either adding/pushing your current changes or `git stash` your current changes.
+
+Step 2) Create (or modify) the `.gitattributes` file and add content to it:
+
+```bash
+# Default settings, fine for now.
+* text=auto
+
+# Different types and how to handle line endings
+*.txt text eol=crlf
+*.py text eol=lf diff=python
+*.json text eol=lf
+*.html text eol=lf diff=html
+*.js text eol=lf
+*.css text eol=lf diff=css
+
+# Binary files
+*.[Gg][Ii][Ff] binary
+*.[Jj][Pp][Gg] binary
+*.[Jj][Pp][Ee][Gg] binary
+
+### .. and so on
+### .. view our .gitattributes for more examples.
+### .. https://github.com/aminehaddad/django-environment-in-vagrant/blob/master/.gitattributes
+```
+
+Step 3) **Commit and Push** the `.gitattributes` file to your repository.
+
+Step 4) Run these commands every time there is a modification of `.gitattributes`:
+
+```bash
+git rm --cached -r .
+git reset --hard
+```
+
+Step 5) Modified files are now shown in `git status` and must be pushed to your repository.
+
+That's it!
+
 #### Question: Why is VirtualBox 6.1.26 causing `E_FAIL (0x80004005)`?
 
 In [VirtualBox 6.1.26](https://www.virtualbox.org/wiki/Changelog), you will see the update in the Changelog:
