@@ -1,6 +1,59 @@
-# Note: once added/modified, every developer should run these commands:
+# The `.gitattributes` tells `git` how to modify files. Official [Git documentation](https://git-scm.com/docs/gitattributes). Commands below come from [Carl Saunders](https://dev.to/deadlybyte/please-add-gitattributes-to-your-git-repository-1jld) (Thanks!)
+
+# Note: we include our [.gitattributes](https://github.com/aminehaddad/django-environment-in-vagrant/blob/master/.gitattributes)
+
+# Step 1: Prior to committing your .gitattributes, see if your 'git status' has files. If so then commit/push them, or stash them.
+
+# ```bash
+# git status
+# git add .
+# git commit -m "Updated files before .gitattributes."
+# git push
+# ```
+
+# OR stash your files by running:
+
+# ```bash
+# git stash
+# ```
+
+# Step 2: Create or update your `.gitattributes` file:
+
+# You can find our [.gitattributes](https://github.com/aminehaddad/django-environment-in-vagrant/blob/master/.gitattributes) here.
+
+# Step 3: Add (or modify) and push your .gitattributes file:
+
+# ```bash
+# git add .gitattributes
+# git commit -m "Updated .gitattributes."
+# git push
+# ```
+
+# Step 4: Run the following commands to force the changes:
+
+# ```bash
 # git rm --cached -r .
 # git reset --hard
+# ```
+
+# Step 5: If you have stashed your files, you can retrieve them
+
+# ```bash
+# git stash pop
+# ```
+
+# Step 6: If you have a TEAM or MULTIPLE devices, everyone must run the following as well (perhaps stash changes too):
+
+# ```bash
+# git rm --cached -r .
+# git reset --hard
+# ```
+
+###
+### Starting with 'text=auto' means it will apply your settings below for each specified files.
+### For non-specified files, git will try to figure out the type for you.
+### Warning: non-specified files are set as BINARY if the first 8,000 bytes contain NUL/NULL.
+###
 
 * text=auto
 
